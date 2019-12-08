@@ -4,9 +4,7 @@ import { store } from './store/Store'
 
 const DataPage = (props) => {
     const data = store.getState().table[props.match.params.index]
-
     if (data === undefined) return <h1>404 not found</h1>
-
     console.log(data)
     return (
         <div>

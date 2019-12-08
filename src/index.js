@@ -1,23 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
+import { Switch, BrowserRouter, Route, HashRouter } from 'react-router-dom'
 import './index.css';
-import App from './App'
 import * as serviceWorker from './serviceWorker';
 import { store } from './store/Store'
+import MainPage from './MainPage'
+import DataPage from './DataPage'
+
+
 
 const app = (
     <Provider store={store}>
         <BrowserRouter>
-            <App /> 
-        </BrowserRouter>        
+            <HashRouter basename='/'>
+                <Switch>
+                    <Route path='/' exact component={MainPage} />
+                    <Route path={`/tasks/:index`} exact component={DataPage} />
+                    <Route render={() => <h1>404 not found</h1>} />
+                </Switch>
+             </HashRouter>
+        </BrowserRouter>       
     </Provider>
 )
 
-store.subscribe(()=>{
-    localStorage.setItem('reduxState', JSON.stringify(store.getState()))
-  })
+
+
+// store.subscribe(()=> {
+//     localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+// })
 
 
 ReactDOM.render(app, document.getElementById('root'));

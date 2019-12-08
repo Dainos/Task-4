@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, HashRouter } from 'react-router-dom'
 
 import MainPage from './MainPage'
 import DataPage from './DataPage'
@@ -12,19 +12,20 @@ import DataPage from './DataPage'
 
 const App = (props) => {
 
-  
+
 
   return (
     <div>
-      <Switch>
-        <Route path='/' exact component={MainPage} />
+      <HashRouter basename='/'>
+        <Switch>
+          <Route path='/' exact component={MainPage} />
+          {props.table.map((item, index) => index > 0 ? <Route path={`/tasks/:index`} key={index} exact component={DataPage} /> : null)}
+          <Route render={() => <h1>404 not found</h1>} />
+        </Switch>
+      </HashRouter>
 
-        {props.table.map((item, index) => index > 0 ? <Route path={`/tasks/:index`} key={index} exact component={DataPage} /> : null)}
-        <Route render={() => <h1>404 not found</h1>}/>
-      </Switch>
 
 
-      
     </div>
   )
 }
@@ -32,12 +33,7 @@ const App = (props) => {
 const stateToProps = (state) => {
 
   return {
-    currentTab: state.currentTab,
-    currentTime: state.currentTime,
-    currentName: state.currentName,
-    timerId: state.timerId,
-    table: state.table,
-    showAlert: state.showAlert
+    table: state.table
   }
 }
 

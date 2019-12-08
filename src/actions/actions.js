@@ -1,55 +1,75 @@
-import * as actions from '../actions/actionTypes'
 
-// const changeTab = () => {    
-//     return {
-//         type: actions.CHANGE_TAB
-//     }
-// }
+export const CHANGE_TAB = 'CHANGE_TAB'
+export const CHANGE_TIME = 'CHANGE_TIME'
+export const STOP_TIMER = 'STOP_TIMER'
+export const SET_TIMER = 'SET_TIMER'
+export const RESET_TIMER = 'RESET_TIMER'
+export const ADD_DATA = 'ADD_DATA'
+export const UPDATE_NAME = 'UPDATE_NAME'
+export const DELETE_DATA = 'DELETE_DATA'
+export const ALERT = 'ALERT'
+export const RESTART_TIMER = 'RESTART_TIMER'
+export const UPDATE_FROM_LOCALSTORAGE = 'UPDATE_FROM_LOCALSTORAGE'
+export const ADD_GENERATED = 'ADD_GENERATED'
 
-export function changeTab () {    
+const changeTab = (tab) => {    
     return {
-        type: actions.CHANGE_TAB
+        type: CHANGE_TAB,
+        payload: tab
     }
 }
-
 const changeTime = time => {    
     return {
-        type: actions.CHANGE_TIME,
+        type: CHANGE_TIME,
         payload: time
     }
 }
 const setTimer = timeriD => {    
     return {
-        type: actions.SET_TIMER,
+        type: SET_TIMER,
         payload: timeriD
     }
 }
-const stopTimer = () => {    
+const stopTimer = (timeEnd) => {    
     return {
-        type: actions.STOP_TIMER
+        type: STOP_TIMER,
+        payload: timeEnd
     }
 }
 const addData = data => {    
     return {
-        type: actions.ADD_DATA,
+        type: ADD_DATA,
         payload: data
     }
 }
 const updateName = name => {    
     return {
-        type: actions.UPDATE_NAME,
+        type: UPDATE_NAME,
         payload: name
     }
 }
 const alert = () => {    
     return {
-        type: actions.ALERT
+        type: ALERT
     }
 }
 const deleteData = index => {    
     return {
-        type: actions.DELETE_DATA,
+        type: DELETE_DATA,
         payload: index
+    }
+}
+
+const updateFromLS = store => {
+    return {
+        type: UPDATE_FROM_LOCALSTORAGE,
+        payload: store
+    }
+}
+const addGenerated = table => {
+    return {
+        type: ADD_GENERATED,
+        payload: table
     }
 }
 
@@ -57,4 +77,4 @@ const deleteData = index => {
 
 
 
-export {/* changeTab, */ changeTime, setTimer, stopTimer, addData, updateName, alert, deleteData}
+export {changeTab, changeTime, setTimer, stopTimer, addData, updateName, alert, deleteData, updateFromLS, addGenerated}

@@ -1,7 +1,13 @@
-import { createStore,/*  applyMiddleware  */} from 'redux' 
-// import createSagaMiddleware from 'redux-saga'
+import { createStore, compose,  applyMiddleware } from 'redux' 
+import createSagaMiddleware from 'redux-saga'
 import reducer from '../reducers/Reducer'
-// import { helloSaga } from '../sagas'
+import { rootSaga } from '../sagas'
+
+const composeEnhancers =
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    }) : compose;
 
 const initialState = {
     currentTab: 0,
@@ -11,33 +17,21 @@ const initialState = {
     timeStart: null,
     timeEnd: null,
     dateStart: null,
-    table: [
-        ['№', 'Task', 'Time Start', 'Time End', 'Time Spend', 'Info', 'Delete']
-    ],
+    table: [],
     showAlert: false
 }
 
-const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {}
 
+const sagaMiddleware = createSagaMiddleware()
 
-console.log(persistedState)
+const customMiddleware = store => next => action => {
+    const res = next(action)
+    return res
+}
 
-// const persistMiddleware = ({ getState(), dispatch }) => next => action => {
-//     const result = next(action);
-//     localStorage.set('my-state', JSON.stringify(getState());
-//     return result;
-// }
+const store = createStore(reducer, composeEnhancers(applyMiddleware(customMiddleware, sagaMiddleware)));
 
-// const sagaMiddleware = createSagaMiddleware()
+sagaMiddleware.run(rootSaga)
 
-// const customMiddleware = store => next => action => {
-//     const res = next(action)
-//     return res
-// }
-
-const store = createStore(reducer/* , applyMiddleware(customMiddleware) */);
-
-// sagaMiddleware.run(helloSaga)
-
-export { store, initialState, persistedState }
+export { store, initialState }
 
