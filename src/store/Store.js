@@ -21,15 +21,10 @@ const initialState = {
     showAlert: false
 }
 
-
 const sagaMiddleware = createSagaMiddleware()
 
-const customMiddleware = store => next => action => {
-    const res = next(action)
-    return res
-}
 
-const store = createStore(reducer, composeEnhancers(applyMiddleware(customMiddleware, sagaMiddleware)));
+const store = createStore(reducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
 
 sagaMiddleware.run(rootSaga)
 

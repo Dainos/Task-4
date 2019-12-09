@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux'
 import { BarChart, Bar, XAxis, YAxis, Legend } from 'recharts';
 import Button from '@material-ui/core/Button'
-import * as actions from '../actions/actions'
-const moment = require('moment');
+import moment from 'moment'
+import { newDate } from '../helpers/helper'
 
 const DataChart = props => {
 
@@ -17,9 +16,8 @@ const DataChart = props => {
 
 
     for (let i = 1; i < table.length; i++) {
-        let hours = table[i][2].split(':')
-        // console.log(hours)
-        let minutes = table[i][4].split(':')
+        let hours = moment(table[i][2], 'HH:mm:ss').format('HH')
+        let minutes = moment(table[i][4], 'HH:mm:ss').format('mm')
         timeData[+hours[0]] += +minutes[1]
     }
 
@@ -56,25 +54,13 @@ const generator = (addGenerated) => {
         const minutes = Math.floor(Math.random()*59)
         newTable[i][0] = i
         newTable[i][1] = 'Random name'
-        newTable[i][2] = moment('00:00:00', 'HH:mm:ss').add(hours, 'hours').add(minutes, 'minute').format('HH:mm:ss')
-        newTable[i][3] = moment(newTable[i][2], 'HH:mm:ss').add(duration, 'minute').format('HH:mm:ss')
-        newTable[i][4] = moment('00:00:00', 'HH:mm:ss').add(duration, 'minute').format('HH:mm:ss')
+        newTable[i][2] = newDate(undefined, hours, minutes)
+        newTable[i][3] = newDate(newTable[i][2], undefined, duration)
+        newTable[i][4] = newDate(undefined, undefined, duration)
     }
     addGenerated(newTable)
 
 }
 
-const stateToProps = (state) => {
-    return {
-        table: state.table,
-    }
-}
 
-const dispatchToProps = (dispatch) => {
-    return {
-        deleteData: (index) => dispatch(actions.deleteData(index)),
-        addGenerated: (newTable) => dispatch(actions.addGenerated(newTable))    
-    }
-}
-
-export default connect(stateToProps, dispatchToProps)(DataChart)
+export default DataChart

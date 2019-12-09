@@ -11,7 +11,33 @@ import * as actions from '../actions/actions'
 import DataTable from '../components/DataTable'
 import DataChart from '../components/DataChart'
 import AlertDialog from '../components/AlertDialog'
-const moment = require('moment');
+import { styled } from '@material-ui/core/styles';
+import './styles.css'
+import moment from 'moment'
+
+const MyButton = styled(Button)({
+    background: 'white',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 0 5px rgba(0,0,0,0.5)',
+    color: 'blue',
+    height: "40px",
+    width: '70px',
+    padding: '0 30px',
+    marginBottom: '30px'
+});
+
+const Input = styled(TextField)({
+    color: 'blue',
+    textAlign: 'center',
+})
+
+const MyTab = styled(Tab)({
+    backgroundColor: '#1FBCD3',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '12pt'
+})
 
 
 class MainPage extends Component {
@@ -19,11 +45,7 @@ class MainPage extends Component {
     changeTab = () => {
         const { currentTab, changeTab } = this.props
         if (currentTab === 1) changeTab(0)
-        else changeTab(1)
-        // console.log(moment().format('HH:mm:ss'))
-        // console.log(moment('00:00:00', 'HH:mm:ss').add(150, 'second').format('HH:mm:ss'))
-
-        
+        else changeTab(1)       
     }
 
     startTimer = () => {
@@ -57,35 +79,6 @@ class MainPage extends Component {
         addData(this.timeRender().timeString)
     }
 
-    restartTimer = () => {
-        console.log('restartTimer')
-        // const localState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {}
-        // const { dateStart, changeTime, restartTimer, currentTime } = this.props
-
-        // if (dateStart === null) return
-
-        // const newCurrentDate = new Date()
-        // let newCurrentSeconds = this.subTime(newCurrentDate.getSeconds(), dateStart.seconds) + this.subTime(newCurrentDate.getMinutes(), dateStart.minutes) * 60 + this.subTime(newCurrentDate.getHours(), dateStart.hours) * 3600
-
-        // if (localState.timerId !== null && newCurrentSeconds > currentTime) {
-
-        //     clearTimeout(localState.table.timerId)
-
-        //     console.log(currentTime)
-
-        //     let newCurrentTime = this.timeFormat(this.subTime(newCurrentDate.getSeconds(), dateStart.seconds), this.subTime(newCurrentDate.getMinutes(), dateStart.minutes), this.subTime(newCurrentDate.getHours(), dateStart.hours))
-        //     let timerId = setInterval(() => { changeTime(++newCurrentSeconds) }, 1000)
-        //     console.log(this.subTime(newCurrentDate.getSeconds(), this.timeRender().seconds))
-        //     restartTimer(newCurrentTime, timerId)
-        // }
-    }
-
-    // subTime = (t1, t2) => {
-    //     if (t1 >= t2) return t1 - t2
-    //     else return t1 - t2 + 60
-    // }
-
-
     delData = index => {
         const { table, deleteData } = this.props
         table.splice(index, 1)
@@ -93,8 +86,9 @@ class MainPage extends Component {
     }
 
     buttons = () => {
-        if (this.props.timerId == null) return <Button variant="contained" type="submit" color="primary" onClick={this.startTimer}>Start</Button>
-        else return <Button variant="contained" type="submit" color="primary" onClick={this.stopTimer}>Stop</Button>
+        
+        if (this.props.timerId == null) return <MyButton onClick={this.startTimer}>Start</MyButton>
+        else return <MyButton type="submit" onClick={this.stopTimer}>Stop</MyButton>
     }
 
     handleInput = (event) => {
@@ -103,12 +97,14 @@ class MainPage extends Component {
 
     timeRender = () => {
         const { currentTime } = this.props
+
+        const time = moment('00:00:00', 'HH:mm:ss').add(currentTime, 'second')
       
         return {
-            timeString: moment('00:00:00', 'HH:mm:ss').add(currentTime, 'second').format('HH:mm:ss'),
-            seconds: moment('00:00:00', 'HH:mm:ss').add(currentTime, 'second').format('ss'),
-            minutes: moment('00:00:00', 'HH:mm:ss').add(currentTime, 'second').format('mm'),
-            hours: moment('00:00:00', 'HH:mm:ss').add(currentTime, 'second').format('HH'),
+            timeString: time.format('HH:mm:ss'),
+            seconds: time.format('ss'),
+            minutes: time.format('mm'),
+            hours: time.format('HH'),
         }
 
     }
@@ -120,11 +116,13 @@ class MainPage extends Component {
 
     render() {
 
-        const { currentTab, currentName, table, showAlert } = this.props
+        const { currentTab, currentName, table, showAlert,addGenerated } = this.props
         const tabs = [
             (<DataTable table={table} deleteData={this.delData} />),
-            (<DataChart />)
+            (<DataChart table={table} addGenerated={addGenerated}/>)
         ]
+
+        
 
         
         return (
@@ -134,19 +132,21 @@ class MainPage extends Component {
                     direction="column"
                     justify="flex-start"
                     alignItems="center">
-                    <TextField id="standard-basic" value={currentName} label="Name of your task" color="primary" onChange={this.handleInput} />
-                    <h1>{this.timeRender().timeString}</h1>
+                    <Input id="standard-basic" InputLabelProps = {{ color: "primary"}} value={currentName} label="Name of your task" margin='normal' /* color="primary" */ onChange={this.handleInput} />
+                    <div className="timer">
+                        <p className="time">{this.timeRender().timeString}</p>
+                    </div>
+                    
                     {this.buttons()}
                 </Grid>
                 <Tabs
                     value={currentTab}
                     indicatorColor="secondary"
-                    textColor="primary"
                     variant="fullWidth"
                     onChange={this.changeTab}
                 >
-                    <Tab label="TASKS LOG"></Tab>
-                    <Tab label="TASKS CHART"></Tab>
+                    <MyTab label="TASKS LOG"></MyTab>
+                    <MyTab label="TASKS CHART"></MyTab>
                 </Tabs>
                 {tabs[currentTab]}
 
@@ -179,6 +179,7 @@ const dispatchToProps = (dispatch) => {
         updateName: (name) => dispatch(actions.updateName(name)),
         alert: () => dispatch(actions.alert()),
         deleteData: (index) => dispatch(actions.deleteData(index)),
+        addGenerated: (newTable) => dispatch(actions.addGenerated(newTable))
     }
 
 }

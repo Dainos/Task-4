@@ -6,6 +6,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import { styled } from '@material-ui/core/styles';
+
+const MyButton = styled(Button)({
+    background: 'white',
+    color: '#44C7DA',
+    height: "40px",
+    width: '70px',
+});
+
+const MyDialogTitle = styled(DialogTitle)({
+    color: '#BD2E5D',
+    fontWeight: 'bolder'
+});
 
 
 const AlertDialog = (props) => {
@@ -13,15 +26,15 @@ const AlertDialog = (props) => {
     
 
     return (
-        <Dialog open={props.open} color="primary">
-            <DialogTitle color="primary">Empty task name</DialogTitle>
+        <Dialog open={props.open} >
+            <MyDialogTitle >Empty task name</MyDialogTitle>
             <DialogContent>
                 <DialogContentText>
                     You are trying close your task without name, enter the title and try again!
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={props.handle}>CLOSE</Button>
+                <MyButton onClick={props.handle}>CLOSE</MyButton>
             </DialogActions>
         </Dialog>
     )
