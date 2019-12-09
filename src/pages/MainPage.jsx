@@ -7,10 +7,10 @@ import Grid from '@material-ui/core/Grid'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 
-import * as actions from './actions/actions'
-import DataTable from './DataTable'
-import DataChart from './DataChart'
-import AlertDialog from './AlertDialog'
+import * as actions from '../actions/actions'
+import DataTable from '../components/DataTable'
+import DataChart from '../components/DataChart'
+import AlertDialog from '../components/AlertDialog'
 const moment = require('moment');
 
 

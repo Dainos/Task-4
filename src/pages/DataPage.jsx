@@ -1,5 +1,5 @@
 import React from 'react'
-import { store } from './store/Store'
+import { store } from '../store/Store'
 
 
 const DataPage = (props) => {

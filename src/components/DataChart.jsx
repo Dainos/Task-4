@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { BarChart, Bar, XAxis, YAxis, Legend } from 'recharts';
 import Button from '@material-ui/core/Button'
-import * as actions from './actions/actions'
+import * as actions from '../actions/actions'
 const moment = require('moment');
 
 const DataChart = props => {
@@ -18,7 +18,7 @@ const DataChart = props => {
 
     for (let i = 1; i < table.length; i++) {
         let hours = table[i][2].split(':')
-        console.log(hours)
+        // console.log(hours)
         let minutes = table[i][4].split(':')
         timeData[+hours[0]] += +minutes[1]
     }
@@ -42,9 +42,11 @@ const DataChart = props => {
     )
 }
 
+let newTable = []
+
 const generator = (addGenerated) => {
     const amount = Math.floor(Math.random()*5+10)
-    const newTable = []
+    newTable = []
     
     for(let i = 0; i < amount; i++) {
 
@@ -59,10 +61,10 @@ const generator = (addGenerated) => {
         newTable[i][4] = moment('00:00:00', 'HH:mm:ss').add(duration, 'minute').format('HH:mm:ss')
     }
     addGenerated(newTable)
+
 }
 
 const stateToProps = (state) => {
-
     return {
         table: state.table,
     }

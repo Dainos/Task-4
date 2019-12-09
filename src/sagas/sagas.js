@@ -1,6 +1,6 @@
 
-import * as actions from './actions/actions'
-import { store } from './store/Store'
+import * as actions from '../actions/actions'
+import { store } from '../store/Store'
 import { put, takeEvery, all } from 'redux-saga/effects'
 const moment = require('moment');
 

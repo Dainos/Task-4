@@ -5,8 +5,8 @@ import { Switch, BrowserRouter, Route, HashRouter } from 'react-router-dom'
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { store } from './store/Store'
-import MainPage from './MainPage'
-import DataPage from './DataPage'
+import MainPage from './pages/MainPage'
+import DataPage from './pages/DataPage'
 
 
 
